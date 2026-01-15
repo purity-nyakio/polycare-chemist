@@ -9,5 +9,4 @@ const AuditLogSchema = new mongoose.Schema({
     details: { type: String }, 
     timestamp: { type: Date, default: Date.now } // Use this name everywhere!
 });
-
 module.exports = mongoose.models.AuditLog || mongoose.model('AuditLog', AuditLogSchema);

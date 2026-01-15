@@ -10,4 +10,5 @@ const BatchSchema = new mongoose.Schema({
     dateReceived: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Batch', BatchSchema);
+// 🔒 PREVENT OverwriteModelError (DO NOT REMOVE)
+module.exports = mongoose.models.Batch || mongoose.model('Batch', BatchSchema);

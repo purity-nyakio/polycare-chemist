@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const AuditLog = require('../models/Auditlog'); // Ensure the filename matches (auditlog vs AuditLog)
+const AuditLog = require("../models/AuditLog")
 const auth = require('../middleware/authmiddleware');
 
 /**

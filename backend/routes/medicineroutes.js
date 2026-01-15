@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Medicine = require('../models/medicine');
-const Batch = require('../models/batch'); 
-const AuditLog = require('../models/Auditlog');
+const Batch = require('../models/Batch'); 
+const AuditLog = require('../models/AuditLog');
 const auth = require('../middleware/authmiddleware');
 
 /**

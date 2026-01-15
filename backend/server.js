@@ -10,27 +10,34 @@ require('dotenv').config();
 const app = express();
 
 // --- 1. MIDDLEWARE ---
-/** * IMPORTANT: Limits increased to 50MB to support profile photo uploads 
- * (Base64 strings are much larger than standard text).
- */
 app.use(express.json({ limit: '50mb' })); 
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// Allows your React frontend (port 3000) to communicate with this API (port 5000)
-app.use(cors()); 
+// UPDATED: Configure CORS to allow your Vercel URL
+// Replace the URL below with your actual Vercel project link
+app.use(cors({
+    origin: ['http://localhost:3000', 'https://polycare-chemist-backend.onrender.com'], 
+    credentials: true
+})); 
 
 // --- 2. DATABASE CONNECTION ---
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ Polycare Database Connected Successfully"))
   .catch(err => console.error("❌ MongoDB Connection Error:", err));
 
-// --- 3. ROUTE MOUNTING ---
+// --- 3. HEALTH CHECK & TEST ROUTE ---
+// This allows you to visit your Render URL in a browser to see if it's working
+app.get('/', (req, res) => {
+    res.status(200).send('🚀 Polycare API is Live and Running!');
+});
+
+// --- 4. ROUTE MOUNTING ---
 app.use('/api/auth', require('./routes/authroutes')); 
 app.use('/api/medicine', require('./routes/medicineroutes')); 
 app.use('/api/sales', require('./routes/salesroutes')); 
 app.use('/api/reports', require('./routes/reportsroutes')); 
 
-// --- 4. GLOBAL ERROR HANDLING ---
+// --- 5. GLOBAL ERROR HANDLING ---
 app.use((err, req, res, next) => {
     console.error("Internal Server Error Log:", err.stack);
     res.status(500).json({ 
@@ -39,8 +46,8 @@ app.use((err, req, res, next) => {
     });
 });
 
-// --- 5. SERVER INITIALIZATION ---
-const PORT = process.env.PORT || 5000;
+// --- 6. SERVER INITIALIZATION ---
+const PORT = process.env.PORT || 10000; // Render uses port 10000 by default
 app.listen(PORT, () => {
   console.log('----------------------------------------------------');
   console.log(`🚀 Polycare Server is active on port ${PORT}`);
